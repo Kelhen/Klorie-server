@@ -1,0 +1,6 @@
+endpoint: https://us1.prisma.sh/kelhen-725f53/Klorie/dev
+datamodel: datamodel.prisma
+
+generate:
+  - generator: typescript-client
+    output: ./generated/prisma-client/
