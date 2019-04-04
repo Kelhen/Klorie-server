@@ -2,3 +2,82 @@ type User {
   id: ID! @unique
   name: String!
 }
+
+type Food {
+  id: ID! @unique
+  foodGroupId: ID!
+  itemNumber: Int!
+  description: String!
+  energy: Float
+  proximate: Proximate!
+  mineral: Mineral!
+  vitamin: Vitamin!
+  saltEquivalents: Float
+  alcohol: Float
+  nitrateIon: Float
+  theobromine: Float
+  caffeine: Float
+  tannin: Float
+  polyphenol: Float
+  aceticAcid: Float
+  cookingOil: Float
+  organicAcids: Float
+}
+
+type Proximate @embedded {
+  water: Float
+  protein: Float
+  proteinByAminoAcid: Float
+  lipid: Float
+  triacylGlycerol: Float
+  saturated: Float
+  monoUnsaturated: Float
+  polyUnsaturated: Float
+  cholesterol: Float
+  carbohydrateTotal: Float
+  carbohydrateAvailable: Float
+  dietaryFiberSoluble: Float
+  dietaryFiberInsoluble: Float
+  dietaryFiberTotal: Float
+  ash: Float
+}
+
+type Mineral @embedded {
+  sodium: Float
+  potassium: Float
+  calcium: Float	
+  magnesium: Float	
+  phosphorus: Float	
+  iron: Float	
+  zinc: Float	
+  copper: Float	
+  manganese: Float	
+  iodine: Float	
+  selenium: Float	
+  chromium: Float	
+  molybdenum: Float
+}
+
+type Vitamin @embedded {
+  retinol: Float
+  alphaCarotene: Float
+  betaCarotene: Float
+  betaCryptoxanthin: Float
+  betaCaroteneEquivalents: Float
+  retinolActivityEquivalents: Float
+  vitaminD: Float
+  alphaTocopherol: Float
+  betaTocopherol: Float
+  gammaTocopherol: Float
+  deltaTocopherol: Float
+  vitaminK: Float
+  thiamin: Float
+  riboflavin: Float
+  niacin: Float
+  vitaminB6: Float
+  vitaminB12: Float
+  folate: Float
+  pantothenicAcid: Float
+  biotin: Float
+  ascorbicAcid: Float
+}
