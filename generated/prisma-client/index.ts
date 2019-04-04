@@ -14,7 +14,11 @@ export type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
+  food: (where?: FoodWhereInput) => Promise<boolean>;
+  mineral: (where?: MineralWhereInput) => Promise<boolean>;
+  proximate: (where?: ProximateWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
+  vitamin: (where?: VitaminWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -36,6 +40,73 @@ export interface Prisma {
    * Queries
    */
 
+  food: (where: FoodWhereUniqueInput) => FoodPromise;
+  foods: (
+    args?: {
+      where?: FoodWhereInput;
+      orderBy?: FoodOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Food>;
+  foodsConnection: (
+    args?: {
+      where?: FoodWhereInput;
+      orderBy?: FoodOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FoodConnectionPromise;
+  minerals: (
+    args?: {
+      where?: MineralWhereInput;
+      orderBy?: MineralOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Mineral>;
+  mineralsConnection: (
+    args?: {
+      where?: MineralWhereInput;
+      orderBy?: MineralOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => MineralConnectionPromise;
+  proximates: (
+    args?: {
+      where?: ProximateWhereInput;
+      orderBy?: ProximateOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Proximate>;
+  proximatesConnection: (
+    args?: {
+      where?: ProximateWhereInput;
+      orderBy?: ProximateOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => ProximateConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
   users: (
     args?: {
@@ -59,12 +130,63 @@ export interface Prisma {
       last?: Int;
     }
   ) => UserConnectionPromise;
+  vitamins: (
+    args?: {
+      where?: VitaminWhereInput;
+      orderBy?: VitaminOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => FragmentableArray<Vitamin>;
+  vitaminsConnection: (
+    args?: {
+      where?: VitaminWhereInput;
+      orderBy?: VitaminOrderByInput;
+      skip?: Int;
+      after?: String;
+      before?: String;
+      first?: Int;
+      last?: Int;
+    }
+  ) => VitaminConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
+  createFood: (data: FoodCreateInput) => FoodPromise;
+  updateFood: (
+    args: { data: FoodUpdateInput; where: FoodWhereUniqueInput }
+  ) => FoodPromise;
+  updateManyFoods: (
+    args: { data: FoodUpdateManyMutationInput; where?: FoodWhereInput }
+  ) => BatchPayloadPromise;
+  upsertFood: (
+    args: {
+      where: FoodWhereUniqueInput;
+      create: FoodCreateInput;
+      update: FoodUpdateInput;
+    }
+  ) => FoodPromise;
+  deleteFood: (where: FoodWhereUniqueInput) => FoodPromise;
+  deleteManyFoods: (where?: FoodWhereInput) => BatchPayloadPromise;
+  createMineral: (data: MineralCreateInput) => MineralPromise;
+  updateManyMinerals: (
+    args: { data: MineralUpdateManyMutationInput; where?: MineralWhereInput }
+  ) => BatchPayloadPromise;
+  deleteManyMinerals: (where?: MineralWhereInput) => BatchPayloadPromise;
+  createProximate: (data: ProximateCreateInput) => ProximatePromise;
+  updateManyProximates: (
+    args: {
+      data: ProximateUpdateManyMutationInput;
+      where?: ProximateWhereInput;
+    }
+  ) => BatchPayloadPromise;
+  deleteManyProximates: (where?: ProximateWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
   updateUser: (
     args: { data: UserUpdateInput; where: UserWhereUniqueInput }
@@ -81,6 +203,11 @@ export interface Prisma {
   ) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  createVitamin: (data: VitaminCreateInput) => VitaminPromise;
+  updateManyVitamins: (
+    args: { data: VitaminUpdateManyMutationInput; where?: VitaminWhereInput }
+  ) => BatchPayloadPromise;
+  deleteManyVitamins: (where?: VitaminWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -90,9 +217,21 @@ export interface Prisma {
 }
 
 export interface Subscription {
+  food: (
+    where?: FoodSubscriptionWhereInput
+  ) => FoodSubscriptionPayloadSubscription;
+  mineral: (
+    where?: MineralSubscriptionWhereInput
+  ) => MineralSubscriptionPayloadSubscription;
+  proximate: (
+    where?: ProximateSubscriptionWhereInput
+  ) => ProximateSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
+  vitamin: (
+    where?: VitaminSubscriptionWhereInput
+  ) => VitaminSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -102,6 +241,114 @@ export interface ClientConstructor<T> {
 /**
  * Types
  */
+
+export type FoodOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "foodGroupId_ASC"
+  | "foodGroupId_DESC"
+  | "itemNumber_ASC"
+  | "itemNumber_DESC"
+  | "description_ASC"
+  | "description_DESC"
+  | "energy_ASC"
+  | "energy_DESC"
+  | "saltEquivalents_ASC"
+  | "saltEquivalents_DESC"
+  | "alcohol_ASC"
+  | "alcohol_DESC"
+  | "nitrateIon_ASC"
+  | "nitrateIon_DESC"
+  | "theobromine_ASC"
+  | "theobromine_DESC"
+  | "caffeine_ASC"
+  | "caffeine_DESC"
+  | "tannin_ASC"
+  | "tannin_DESC"
+  | "polyphenol_ASC"
+  | "polyphenol_DESC"
+  | "aceticAcid_ASC"
+  | "aceticAcid_DESC"
+  | "cookingOil_ASC"
+  | "cookingOil_DESC"
+  | "organicAcids_ASC"
+  | "organicAcids_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type MineralOrderByInput =
+  | "sodium_ASC"
+  | "sodium_DESC"
+  | "potassium_ASC"
+  | "potassium_DESC"
+  | "calcium_ASC"
+  | "calcium_DESC"
+  | "magnesium_ASC"
+  | "magnesium_DESC"
+  | "phosphorus_ASC"
+  | "phosphorus_DESC"
+  | "iron_ASC"
+  | "iron_DESC"
+  | "zinc_ASC"
+  | "zinc_DESC"
+  | "copper_ASC"
+  | "copper_DESC"
+  | "manganese_ASC"
+  | "manganese_DESC"
+  | "iodine_ASC"
+  | "iodine_DESC"
+  | "selenium_ASC"
+  | "selenium_DESC"
+  | "chromium_ASC"
+  | "chromium_DESC"
+  | "molybdenum_ASC"
+  | "molybdenum_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type ProximateOrderByInput =
+  | "water_ASC"
+  | "water_DESC"
+  | "protein_ASC"
+  | "protein_DESC"
+  | "proteinByAminoAcid_ASC"
+  | "proteinByAminoAcid_DESC"
+  | "lipid_ASC"
+  | "lipid_DESC"
+  | "triacylGlycerol_ASC"
+  | "triacylGlycerol_DESC"
+  | "saturated_ASC"
+  | "saturated_DESC"
+  | "monoUnsaturated_ASC"
+  | "monoUnsaturated_DESC"
+  | "polyUnsaturated_ASC"
+  | "polyUnsaturated_DESC"
+  | "cholesterol_ASC"
+  | "cholesterol_DESC"
+  | "carbohydrateTotal_ASC"
+  | "carbohydrateTotal_DESC"
+  | "carbohydrateAvailable_ASC"
+  | "carbohydrateAvailable_DESC"
+  | "dietaryFiberSoluble_ASC"
+  | "dietaryFiberSoluble_DESC"
+  | "dietaryFiberInsoluble_ASC"
+  | "dietaryFiberInsoluble_DESC"
+  | "dietaryFiberTotal_ASC"
+  | "dietaryFiberTotal_DESC"
+  | "ash_ASC"
+  | "ash_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
@@ -113,11 +360,229 @@ export type UserOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
+export type VitaminOrderByInput =
+  | "retinol_ASC"
+  | "retinol_DESC"
+  | "alphaCarotene_ASC"
+  | "alphaCarotene_DESC"
+  | "betaCarotene_ASC"
+  | "betaCarotene_DESC"
+  | "betaCryptoxanthin_ASC"
+  | "betaCryptoxanthin_DESC"
+  | "betaCaroteneEquivalents_ASC"
+  | "betaCaroteneEquivalents_DESC"
+  | "retinolActivityEquivalents_ASC"
+  | "retinolActivityEquivalents_DESC"
+  | "vitaminD_ASC"
+  | "vitaminD_DESC"
+  | "alphaTocopherol_ASC"
+  | "alphaTocopherol_DESC"
+  | "betaTocopherol_ASC"
+  | "betaTocopherol_DESC"
+  | "gammaTocopherol_ASC"
+  | "gammaTocopherol_DESC"
+  | "deltaTocopherol_ASC"
+  | "deltaTocopherol_DESC"
+  | "vitaminK_ASC"
+  | "vitaminK_DESC"
+  | "thiamin_ASC"
+  | "thiamin_DESC"
+  | "riboflavin_ASC"
+  | "riboflavin_DESC"
+  | "niacin_ASC"
+  | "niacin_DESC"
+  | "vitaminB6_ASC"
+  | "vitaminB6_DESC"
+  | "vitaminB12_ASC"
+  | "vitaminB12_DESC"
+  | "folate_ASC"
+  | "folate_DESC"
+  | "pantothenicAcid_ASC"
+  | "pantothenicAcid_DESC"
+  | "biotin_ASC"
+  | "biotin_DESC"
+  | "ascorbicAcid_ASC"
+  | "ascorbicAcid_DESC"
+  | "id_ASC"
+  | "id_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export interface ProximateCreateOneInput {
+  create?: ProximateCreateInput;
+}
+
+export type FoodWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface VitaminUpdateDataInput {
+  retinol?: Float;
+  alphaCarotene?: Float;
+  betaCarotene?: Float;
+  betaCryptoxanthin?: Float;
+  betaCaroteneEquivalents?: Float;
+  retinolActivityEquivalents?: Float;
+  vitaminD?: Float;
+  alphaTocopherol?: Float;
+  betaTocopherol?: Float;
+  gammaTocopherol?: Float;
+  deltaTocopherol?: Float;
+  vitaminK?: Float;
+  thiamin?: Float;
+  riboflavin?: Float;
+  niacin?: Float;
+  vitaminB6?: Float;
+  vitaminB12?: Float;
+  folate?: Float;
+  pantothenicAcid?: Float;
+  biotin?: Float;
+  ascorbicAcid?: Float;
+}
+
+export interface MineralCreateInput {
+  sodium?: Float;
+  potassium?: Float;
+  calcium?: Float;
+  magnesium?: Float;
+  phosphorus?: Float;
+  iron?: Float;
+  zinc?: Float;
+  copper?: Float;
+  manganese?: Float;
+  iodine?: Float;
+  selenium?: Float;
+  chromium?: Float;
+  molybdenum?: Float;
+}
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
+
+export interface VitaminCreateOneInput {
+  create?: VitaminCreateInput;
+}
+
+export interface VitaminUpdateOneRequiredInput {
+  create?: VitaminCreateInput;
+  update?: VitaminUpdateDataInput;
+  upsert?: VitaminUpsertNestedInput;
+}
+
+export interface MineralWhereInput {
+  sodium?: Float;
+  sodium_not?: Float;
+  sodium_in?: Float[] | Float;
+  sodium_not_in?: Float[] | Float;
+  sodium_lt?: Float;
+  sodium_lte?: Float;
+  sodium_gt?: Float;
+  sodium_gte?: Float;
+  potassium?: Float;
+  potassium_not?: Float;
+  potassium_in?: Float[] | Float;
+  potassium_not_in?: Float[] | Float;
+  potassium_lt?: Float;
+  potassium_lte?: Float;
+  potassium_gt?: Float;
+  potassium_gte?: Float;
+  calcium?: Float;
+  calcium_not?: Float;
+  calcium_in?: Float[] | Float;
+  calcium_not_in?: Float[] | Float;
+  calcium_lt?: Float;
+  calcium_lte?: Float;
+  calcium_gt?: Float;
+  calcium_gte?: Float;
+  magnesium?: Float;
+  magnesium_not?: Float;
+  magnesium_in?: Float[] | Float;
+  magnesium_not_in?: Float[] | Float;
+  magnesium_lt?: Float;
+  magnesium_lte?: Float;
+  magnesium_gt?: Float;
+  magnesium_gte?: Float;
+  phosphorus?: Float;
+  phosphorus_not?: Float;
+  phosphorus_in?: Float[] | Float;
+  phosphorus_not_in?: Float[] | Float;
+  phosphorus_lt?: Float;
+  phosphorus_lte?: Float;
+  phosphorus_gt?: Float;
+  phosphorus_gte?: Float;
+  iron?: Float;
+  iron_not?: Float;
+  iron_in?: Float[] | Float;
+  iron_not_in?: Float[] | Float;
+  iron_lt?: Float;
+  iron_lte?: Float;
+  iron_gt?: Float;
+  iron_gte?: Float;
+  zinc?: Float;
+  zinc_not?: Float;
+  zinc_in?: Float[] | Float;
+  zinc_not_in?: Float[] | Float;
+  zinc_lt?: Float;
+  zinc_lte?: Float;
+  zinc_gt?: Float;
+  zinc_gte?: Float;
+  copper?: Float;
+  copper_not?: Float;
+  copper_in?: Float[] | Float;
+  copper_not_in?: Float[] | Float;
+  copper_lt?: Float;
+  copper_lte?: Float;
+  copper_gt?: Float;
+  copper_gte?: Float;
+  manganese?: Float;
+  manganese_not?: Float;
+  manganese_in?: Float[] | Float;
+  manganese_not_in?: Float[] | Float;
+  manganese_lt?: Float;
+  manganese_lte?: Float;
+  manganese_gt?: Float;
+  manganese_gte?: Float;
+  iodine?: Float;
+  iodine_not?: Float;
+  iodine_in?: Float[] | Float;
+  iodine_not_in?: Float[] | Float;
+  iodine_lt?: Float;
+  iodine_lte?: Float;
+  iodine_gt?: Float;
+  iodine_gte?: Float;
+  selenium?: Float;
+  selenium_not?: Float;
+  selenium_in?: Float[] | Float;
+  selenium_not_in?: Float[] | Float;
+  selenium_lt?: Float;
+  selenium_lte?: Float;
+  selenium_gt?: Float;
+  selenium_gte?: Float;
+  chromium?: Float;
+  chromium_not?: Float;
+  chromium_in?: Float[] | Float;
+  chromium_not_in?: Float[] | Float;
+  chromium_lt?: Float;
+  chromium_lte?: Float;
+  chromium_gt?: Float;
+  chromium_gte?: Float;
+  molybdenum?: Float;
+  molybdenum_not?: Float;
+  molybdenum_in?: Float[] | Float;
+  molybdenum_not_in?: Float[] | Float;
+  molybdenum_lt?: Float;
+  molybdenum_lte?: Float;
+  molybdenum_gt?: Float;
+  molybdenum_gte?: Float;
+  AND?: MineralWhereInput[] | MineralWhereInput;
+  OR?: MineralWhereInput[] | MineralWhereInput;
+  NOT?: MineralWhereInput[] | MineralWhereInput;
+}
 
 export interface UserWhereInput {
   id?: ID_Input;
@@ -153,16 +618,729 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export interface VitaminSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: VitaminWhereInput;
+  AND?: VitaminSubscriptionWhereInput[] | VitaminSubscriptionWhereInput;
+  OR?: VitaminSubscriptionWhereInput[] | VitaminSubscriptionWhereInput;
+  NOT?: VitaminSubscriptionWhereInput[] | VitaminSubscriptionWhereInput;
+}
+
+export interface MineralUpsertNestedInput {
+  update: MineralUpdateDataInput;
+  create: MineralCreateInput;
+}
+
+export interface ProximateSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: ProximateWhereInput;
+  AND?: ProximateSubscriptionWhereInput[] | ProximateSubscriptionWhereInput;
+  OR?: ProximateSubscriptionWhereInput[] | ProximateSubscriptionWhereInput;
+  NOT?: ProximateSubscriptionWhereInput[] | ProximateSubscriptionWhereInput;
+}
+
+export interface MineralUpdateDataInput {
+  sodium?: Float;
+  potassium?: Float;
+  calcium?: Float;
+  magnesium?: Float;
+  phosphorus?: Float;
+  iron?: Float;
+  zinc?: Float;
+  copper?: Float;
+  manganese?: Float;
+  iodine?: Float;
+  selenium?: Float;
+  chromium?: Float;
+  molybdenum?: Float;
+}
+
+export interface FoodSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: FoodWhereInput;
+  AND?: FoodSubscriptionWhereInput[] | FoodSubscriptionWhereInput;
+  OR?: FoodSubscriptionWhereInput[] | FoodSubscriptionWhereInput;
+  NOT?: FoodSubscriptionWhereInput[] | FoodSubscriptionWhereInput;
+}
+
+export interface MineralUpdateOneRequiredInput {
+  create?: MineralCreateInput;
+  update?: MineralUpdateDataInput;
+  upsert?: MineralUpsertNestedInput;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: String;
+}
+
+export interface ProximateUpsertNestedInput {
+  update: ProximateUpdateDataInput;
+  create: ProximateCreateInput;
+}
+
 export interface UserCreateInput {
   name: String;
+}
+
+export interface ProximateUpdateDataInput {
+  water?: Float;
+  protein?: Float;
+  proteinByAminoAcid?: Float;
+  lipid?: Float;
+  triacylGlycerol?: Float;
+  saturated?: Float;
+  monoUnsaturated?: Float;
+  polyUnsaturated?: Float;
+  cholesterol?: Float;
+  carbohydrateTotal?: Float;
+  carbohydrateAvailable?: Float;
+  dietaryFiberSoluble?: Float;
+  dietaryFiberInsoluble?: Float;
+  dietaryFiberTotal?: Float;
+  ash?: Float;
+}
+
+export interface MineralUpdateManyMutationInput {
+  sodium?: Float;
+  potassium?: Float;
+  calcium?: Float;
+  magnesium?: Float;
+  phosphorus?: Float;
+  iron?: Float;
+  zinc?: Float;
+  copper?: Float;
+  manganese?: Float;
+  iodine?: Float;
+  selenium?: Float;
+  chromium?: Float;
+  molybdenum?: Float;
+}
+
+export interface ProximateUpdateOneRequiredInput {
+  create?: ProximateCreateInput;
+  update?: ProximateUpdateDataInput;
+  upsert?: ProximateUpsertNestedInput;
+}
+
+export interface VitaminUpsertNestedInput {
+  update: VitaminUpdateDataInput;
+  create: VitaminCreateInput;
+}
+
+export interface FoodUpdateInput {
+  foodGroupId?: ID_Input;
+  itemNumber?: Int;
+  description?: String;
+  energy?: Float;
+  proximate?: ProximateUpdateOneRequiredInput;
+  mineral?: MineralUpdateOneRequiredInput;
+  vitamin?: VitaminUpdateOneRequiredInput;
+  saltEquivalents?: Float;
+  alcohol?: Float;
+  nitrateIon?: Float;
+  theobromine?: Float;
+  caffeine?: Float;
+  tannin?: Float;
+  polyphenol?: Float;
+  aceticAcid?: Float;
+  cookingOil?: Float;
+  organicAcids?: Float;
+}
+
+export interface VitaminWhereInput {
+  retinol?: Float;
+  retinol_not?: Float;
+  retinol_in?: Float[] | Float;
+  retinol_not_in?: Float[] | Float;
+  retinol_lt?: Float;
+  retinol_lte?: Float;
+  retinol_gt?: Float;
+  retinol_gte?: Float;
+  alphaCarotene?: Float;
+  alphaCarotene_not?: Float;
+  alphaCarotene_in?: Float[] | Float;
+  alphaCarotene_not_in?: Float[] | Float;
+  alphaCarotene_lt?: Float;
+  alphaCarotene_lte?: Float;
+  alphaCarotene_gt?: Float;
+  alphaCarotene_gte?: Float;
+  betaCarotene?: Float;
+  betaCarotene_not?: Float;
+  betaCarotene_in?: Float[] | Float;
+  betaCarotene_not_in?: Float[] | Float;
+  betaCarotene_lt?: Float;
+  betaCarotene_lte?: Float;
+  betaCarotene_gt?: Float;
+  betaCarotene_gte?: Float;
+  betaCryptoxanthin?: Float;
+  betaCryptoxanthin_not?: Float;
+  betaCryptoxanthin_in?: Float[] | Float;
+  betaCryptoxanthin_not_in?: Float[] | Float;
+  betaCryptoxanthin_lt?: Float;
+  betaCryptoxanthin_lte?: Float;
+  betaCryptoxanthin_gt?: Float;
+  betaCryptoxanthin_gte?: Float;
+  betaCaroteneEquivalents?: Float;
+  betaCaroteneEquivalents_not?: Float;
+  betaCaroteneEquivalents_in?: Float[] | Float;
+  betaCaroteneEquivalents_not_in?: Float[] | Float;
+  betaCaroteneEquivalents_lt?: Float;
+  betaCaroteneEquivalents_lte?: Float;
+  betaCaroteneEquivalents_gt?: Float;
+  betaCaroteneEquivalents_gte?: Float;
+  retinolActivityEquivalents?: Float;
+  retinolActivityEquivalents_not?: Float;
+  retinolActivityEquivalents_in?: Float[] | Float;
+  retinolActivityEquivalents_not_in?: Float[] | Float;
+  retinolActivityEquivalents_lt?: Float;
+  retinolActivityEquivalents_lte?: Float;
+  retinolActivityEquivalents_gt?: Float;
+  retinolActivityEquivalents_gte?: Float;
+  vitaminD?: Float;
+  vitaminD_not?: Float;
+  vitaminD_in?: Float[] | Float;
+  vitaminD_not_in?: Float[] | Float;
+  vitaminD_lt?: Float;
+  vitaminD_lte?: Float;
+  vitaminD_gt?: Float;
+  vitaminD_gte?: Float;
+  alphaTocopherol?: Float;
+  alphaTocopherol_not?: Float;
+  alphaTocopherol_in?: Float[] | Float;
+  alphaTocopherol_not_in?: Float[] | Float;
+  alphaTocopherol_lt?: Float;
+  alphaTocopherol_lte?: Float;
+  alphaTocopherol_gt?: Float;
+  alphaTocopherol_gte?: Float;
+  betaTocopherol?: Float;
+  betaTocopherol_not?: Float;
+  betaTocopherol_in?: Float[] | Float;
+  betaTocopherol_not_in?: Float[] | Float;
+  betaTocopherol_lt?: Float;
+  betaTocopherol_lte?: Float;
+  betaTocopherol_gt?: Float;
+  betaTocopherol_gte?: Float;
+  gammaTocopherol?: Float;
+  gammaTocopherol_not?: Float;
+  gammaTocopherol_in?: Float[] | Float;
+  gammaTocopherol_not_in?: Float[] | Float;
+  gammaTocopherol_lt?: Float;
+  gammaTocopherol_lte?: Float;
+  gammaTocopherol_gt?: Float;
+  gammaTocopherol_gte?: Float;
+  deltaTocopherol?: Float;
+  deltaTocopherol_not?: Float;
+  deltaTocopherol_in?: Float[] | Float;
+  deltaTocopherol_not_in?: Float[] | Float;
+  deltaTocopherol_lt?: Float;
+  deltaTocopherol_lte?: Float;
+  deltaTocopherol_gt?: Float;
+  deltaTocopherol_gte?: Float;
+  vitaminK?: Float;
+  vitaminK_not?: Float;
+  vitaminK_in?: Float[] | Float;
+  vitaminK_not_in?: Float[] | Float;
+  vitaminK_lt?: Float;
+  vitaminK_lte?: Float;
+  vitaminK_gt?: Float;
+  vitaminK_gte?: Float;
+  thiamin?: Float;
+  thiamin_not?: Float;
+  thiamin_in?: Float[] | Float;
+  thiamin_not_in?: Float[] | Float;
+  thiamin_lt?: Float;
+  thiamin_lte?: Float;
+  thiamin_gt?: Float;
+  thiamin_gte?: Float;
+  riboflavin?: Float;
+  riboflavin_not?: Float;
+  riboflavin_in?: Float[] | Float;
+  riboflavin_not_in?: Float[] | Float;
+  riboflavin_lt?: Float;
+  riboflavin_lte?: Float;
+  riboflavin_gt?: Float;
+  riboflavin_gte?: Float;
+  niacin?: Float;
+  niacin_not?: Float;
+  niacin_in?: Float[] | Float;
+  niacin_not_in?: Float[] | Float;
+  niacin_lt?: Float;
+  niacin_lte?: Float;
+  niacin_gt?: Float;
+  niacin_gte?: Float;
+  vitaminB6?: Float;
+  vitaminB6_not?: Float;
+  vitaminB6_in?: Float[] | Float;
+  vitaminB6_not_in?: Float[] | Float;
+  vitaminB6_lt?: Float;
+  vitaminB6_lte?: Float;
+  vitaminB6_gt?: Float;
+  vitaminB6_gte?: Float;
+  vitaminB12?: Float;
+  vitaminB12_not?: Float;
+  vitaminB12_in?: Float[] | Float;
+  vitaminB12_not_in?: Float[] | Float;
+  vitaminB12_lt?: Float;
+  vitaminB12_lte?: Float;
+  vitaminB12_gt?: Float;
+  vitaminB12_gte?: Float;
+  folate?: Float;
+  folate_not?: Float;
+  folate_in?: Float[] | Float;
+  folate_not_in?: Float[] | Float;
+  folate_lt?: Float;
+  folate_lte?: Float;
+  folate_gt?: Float;
+  folate_gte?: Float;
+  pantothenicAcid?: Float;
+  pantothenicAcid_not?: Float;
+  pantothenicAcid_in?: Float[] | Float;
+  pantothenicAcid_not_in?: Float[] | Float;
+  pantothenicAcid_lt?: Float;
+  pantothenicAcid_lte?: Float;
+  pantothenicAcid_gt?: Float;
+  pantothenicAcid_gte?: Float;
+  biotin?: Float;
+  biotin_not?: Float;
+  biotin_in?: Float[] | Float;
+  biotin_not_in?: Float[] | Float;
+  biotin_lt?: Float;
+  biotin_lte?: Float;
+  biotin_gt?: Float;
+  biotin_gte?: Float;
+  ascorbicAcid?: Float;
+  ascorbicAcid_not?: Float;
+  ascorbicAcid_in?: Float[] | Float;
+  ascorbicAcid_not_in?: Float[] | Float;
+  ascorbicAcid_lt?: Float;
+  ascorbicAcid_lte?: Float;
+  ascorbicAcid_gt?: Float;
+  ascorbicAcid_gte?: Float;
+  AND?: VitaminWhereInput[] | VitaminWhereInput;
+  OR?: VitaminWhereInput[] | VitaminWhereInput;
+  NOT?: VitaminWhereInput[] | VitaminWhereInput;
+}
+
+export interface VitaminCreateInput {
+  retinol?: Float;
+  alphaCarotene?: Float;
+  betaCarotene?: Float;
+  betaCryptoxanthin?: Float;
+  betaCaroteneEquivalents?: Float;
+  retinolActivityEquivalents?: Float;
+  vitaminD?: Float;
+  alphaTocopherol?: Float;
+  betaTocopherol?: Float;
+  gammaTocopherol?: Float;
+  deltaTocopherol?: Float;
+  vitaminK?: Float;
+  thiamin?: Float;
+  riboflavin?: Float;
+  niacin?: Float;
+  vitaminB6?: Float;
+  vitaminB12?: Float;
+  folate?: Float;
+  pantothenicAcid?: Float;
+  biotin?: Float;
+  ascorbicAcid?: Float;
+}
+
+export interface MineralSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: MineralWhereInput;
+  AND?: MineralSubscriptionWhereInput[] | MineralSubscriptionWhereInput;
+  OR?: MineralSubscriptionWhereInput[] | MineralSubscriptionWhereInput;
+  NOT?: MineralSubscriptionWhereInput[] | MineralSubscriptionWhereInput;
 }
 
 export interface UserUpdateInput {
   name?: String;
 }
 
-export interface UserUpdateManyMutationInput {
-  name?: String;
+export interface FoodUpdateManyMutationInput {
+  foodGroupId?: ID_Input;
+  itemNumber?: Int;
+  description?: String;
+  energy?: Float;
+  saltEquivalents?: Float;
+  alcohol?: Float;
+  nitrateIon?: Float;
+  theobromine?: Float;
+  caffeine?: Float;
+  tannin?: Float;
+  polyphenol?: Float;
+  aceticAcid?: Float;
+  cookingOil?: Float;
+  organicAcids?: Float;
+}
+
+export interface MineralCreateOneInput {
+  create?: MineralCreateInput;
+}
+
+export interface ProximateCreateInput {
+  water?: Float;
+  protein?: Float;
+  proteinByAminoAcid?: Float;
+  lipid?: Float;
+  triacylGlycerol?: Float;
+  saturated?: Float;
+  monoUnsaturated?: Float;
+  polyUnsaturated?: Float;
+  cholesterol?: Float;
+  carbohydrateTotal?: Float;
+  carbohydrateAvailable?: Float;
+  dietaryFiberSoluble?: Float;
+  dietaryFiberInsoluble?: Float;
+  dietaryFiberTotal?: Float;
+  ash?: Float;
+}
+
+export interface FoodWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  foodGroupId?: ID_Input;
+  foodGroupId_not?: ID_Input;
+  foodGroupId_in?: ID_Input[] | ID_Input;
+  foodGroupId_not_in?: ID_Input[] | ID_Input;
+  foodGroupId_lt?: ID_Input;
+  foodGroupId_lte?: ID_Input;
+  foodGroupId_gt?: ID_Input;
+  foodGroupId_gte?: ID_Input;
+  foodGroupId_contains?: ID_Input;
+  foodGroupId_not_contains?: ID_Input;
+  foodGroupId_starts_with?: ID_Input;
+  foodGroupId_not_starts_with?: ID_Input;
+  foodGroupId_ends_with?: ID_Input;
+  foodGroupId_not_ends_with?: ID_Input;
+  itemNumber?: Int;
+  itemNumber_not?: Int;
+  itemNumber_in?: Int[] | Int;
+  itemNumber_not_in?: Int[] | Int;
+  itemNumber_lt?: Int;
+  itemNumber_lte?: Int;
+  itemNumber_gt?: Int;
+  itemNumber_gte?: Int;
+  description?: String;
+  description_not?: String;
+  description_in?: String[] | String;
+  description_not_in?: String[] | String;
+  description_lt?: String;
+  description_lte?: String;
+  description_gt?: String;
+  description_gte?: String;
+  description_contains?: String;
+  description_not_contains?: String;
+  description_starts_with?: String;
+  description_not_starts_with?: String;
+  description_ends_with?: String;
+  description_not_ends_with?: String;
+  energy?: Float;
+  energy_not?: Float;
+  energy_in?: Float[] | Float;
+  energy_not_in?: Float[] | Float;
+  energy_lt?: Float;
+  energy_lte?: Float;
+  energy_gt?: Float;
+  energy_gte?: Float;
+  proximate?: ProximateWhereInput;
+  mineral?: MineralWhereInput;
+  vitamin?: VitaminWhereInput;
+  saltEquivalents?: Float;
+  saltEquivalents_not?: Float;
+  saltEquivalents_in?: Float[] | Float;
+  saltEquivalents_not_in?: Float[] | Float;
+  saltEquivalents_lt?: Float;
+  saltEquivalents_lte?: Float;
+  saltEquivalents_gt?: Float;
+  saltEquivalents_gte?: Float;
+  alcohol?: Float;
+  alcohol_not?: Float;
+  alcohol_in?: Float[] | Float;
+  alcohol_not_in?: Float[] | Float;
+  alcohol_lt?: Float;
+  alcohol_lte?: Float;
+  alcohol_gt?: Float;
+  alcohol_gte?: Float;
+  nitrateIon?: Float;
+  nitrateIon_not?: Float;
+  nitrateIon_in?: Float[] | Float;
+  nitrateIon_not_in?: Float[] | Float;
+  nitrateIon_lt?: Float;
+  nitrateIon_lte?: Float;
+  nitrateIon_gt?: Float;
+  nitrateIon_gte?: Float;
+  theobromine?: Float;
+  theobromine_not?: Float;
+  theobromine_in?: Float[] | Float;
+  theobromine_not_in?: Float[] | Float;
+  theobromine_lt?: Float;
+  theobromine_lte?: Float;
+  theobromine_gt?: Float;
+  theobromine_gte?: Float;
+  caffeine?: Float;
+  caffeine_not?: Float;
+  caffeine_in?: Float[] | Float;
+  caffeine_not_in?: Float[] | Float;
+  caffeine_lt?: Float;
+  caffeine_lte?: Float;
+  caffeine_gt?: Float;
+  caffeine_gte?: Float;
+  tannin?: Float;
+  tannin_not?: Float;
+  tannin_in?: Float[] | Float;
+  tannin_not_in?: Float[] | Float;
+  tannin_lt?: Float;
+  tannin_lte?: Float;
+  tannin_gt?: Float;
+  tannin_gte?: Float;
+  polyphenol?: Float;
+  polyphenol_not?: Float;
+  polyphenol_in?: Float[] | Float;
+  polyphenol_not_in?: Float[] | Float;
+  polyphenol_lt?: Float;
+  polyphenol_lte?: Float;
+  polyphenol_gt?: Float;
+  polyphenol_gte?: Float;
+  aceticAcid?: Float;
+  aceticAcid_not?: Float;
+  aceticAcid_in?: Float[] | Float;
+  aceticAcid_not_in?: Float[] | Float;
+  aceticAcid_lt?: Float;
+  aceticAcid_lte?: Float;
+  aceticAcid_gt?: Float;
+  aceticAcid_gte?: Float;
+  cookingOil?: Float;
+  cookingOil_not?: Float;
+  cookingOil_in?: Float[] | Float;
+  cookingOil_not_in?: Float[] | Float;
+  cookingOil_lt?: Float;
+  cookingOil_lte?: Float;
+  cookingOil_gt?: Float;
+  cookingOil_gte?: Float;
+  organicAcids?: Float;
+  organicAcids_not?: Float;
+  organicAcids_in?: Float[] | Float;
+  organicAcids_not_in?: Float[] | Float;
+  organicAcids_lt?: Float;
+  organicAcids_lte?: Float;
+  organicAcids_gt?: Float;
+  organicAcids_gte?: Float;
+  AND?: FoodWhereInput[] | FoodWhereInput;
+  OR?: FoodWhereInput[] | FoodWhereInput;
+  NOT?: FoodWhereInput[] | FoodWhereInput;
+}
+
+export interface FoodCreateInput {
+  foodGroupId: ID_Input;
+  itemNumber: Int;
+  description: String;
+  energy?: Float;
+  proximate: ProximateCreateOneInput;
+  mineral: MineralCreateOneInput;
+  vitamin: VitaminCreateOneInput;
+  saltEquivalents?: Float;
+  alcohol?: Float;
+  nitrateIon?: Float;
+  theobromine?: Float;
+  caffeine?: Float;
+  tannin?: Float;
+  polyphenol?: Float;
+  aceticAcid?: Float;
+  cookingOil?: Float;
+  organicAcids?: Float;
+}
+
+export interface ProximateWhereInput {
+  water?: Float;
+  water_not?: Float;
+  water_in?: Float[] | Float;
+  water_not_in?: Float[] | Float;
+  water_lt?: Float;
+  water_lte?: Float;
+  water_gt?: Float;
+  water_gte?: Float;
+  protein?: Float;
+  protein_not?: Float;
+  protein_in?: Float[] | Float;
+  protein_not_in?: Float[] | Float;
+  protein_lt?: Float;
+  protein_lte?: Float;
+  protein_gt?: Float;
+  protein_gte?: Float;
+  proteinByAminoAcid?: Float;
+  proteinByAminoAcid_not?: Float;
+  proteinByAminoAcid_in?: Float[] | Float;
+  proteinByAminoAcid_not_in?: Float[] | Float;
+  proteinByAminoAcid_lt?: Float;
+  proteinByAminoAcid_lte?: Float;
+  proteinByAminoAcid_gt?: Float;
+  proteinByAminoAcid_gte?: Float;
+  lipid?: Float;
+  lipid_not?: Float;
+  lipid_in?: Float[] | Float;
+  lipid_not_in?: Float[] | Float;
+  lipid_lt?: Float;
+  lipid_lte?: Float;
+  lipid_gt?: Float;
+  lipid_gte?: Float;
+  triacylGlycerol?: Float;
+  triacylGlycerol_not?: Float;
+  triacylGlycerol_in?: Float[] | Float;
+  triacylGlycerol_not_in?: Float[] | Float;
+  triacylGlycerol_lt?: Float;
+  triacylGlycerol_lte?: Float;
+  triacylGlycerol_gt?: Float;
+  triacylGlycerol_gte?: Float;
+  saturated?: Float;
+  saturated_not?: Float;
+  saturated_in?: Float[] | Float;
+  saturated_not_in?: Float[] | Float;
+  saturated_lt?: Float;
+  saturated_lte?: Float;
+  saturated_gt?: Float;
+  saturated_gte?: Float;
+  monoUnsaturated?: Float;
+  monoUnsaturated_not?: Float;
+  monoUnsaturated_in?: Float[] | Float;
+  monoUnsaturated_not_in?: Float[] | Float;
+  monoUnsaturated_lt?: Float;
+  monoUnsaturated_lte?: Float;
+  monoUnsaturated_gt?: Float;
+  monoUnsaturated_gte?: Float;
+  polyUnsaturated?: Float;
+  polyUnsaturated_not?: Float;
+  polyUnsaturated_in?: Float[] | Float;
+  polyUnsaturated_not_in?: Float[] | Float;
+  polyUnsaturated_lt?: Float;
+  polyUnsaturated_lte?: Float;
+  polyUnsaturated_gt?: Float;
+  polyUnsaturated_gte?: Float;
+  cholesterol?: Float;
+  cholesterol_not?: Float;
+  cholesterol_in?: Float[] | Float;
+  cholesterol_not_in?: Float[] | Float;
+  cholesterol_lt?: Float;
+  cholesterol_lte?: Float;
+  cholesterol_gt?: Float;
+  cholesterol_gte?: Float;
+  carbohydrateTotal?: Float;
+  carbohydrateTotal_not?: Float;
+  carbohydrateTotal_in?: Float[] | Float;
+  carbohydrateTotal_not_in?: Float[] | Float;
+  carbohydrateTotal_lt?: Float;
+  carbohydrateTotal_lte?: Float;
+  carbohydrateTotal_gt?: Float;
+  carbohydrateTotal_gte?: Float;
+  carbohydrateAvailable?: Float;
+  carbohydrateAvailable_not?: Float;
+  carbohydrateAvailable_in?: Float[] | Float;
+  carbohydrateAvailable_not_in?: Float[] | Float;
+  carbohydrateAvailable_lt?: Float;
+  carbohydrateAvailable_lte?: Float;
+  carbohydrateAvailable_gt?: Float;
+  carbohydrateAvailable_gte?: Float;
+  dietaryFiberSoluble?: Float;
+  dietaryFiberSoluble_not?: Float;
+  dietaryFiberSoluble_in?: Float[] | Float;
+  dietaryFiberSoluble_not_in?: Float[] | Float;
+  dietaryFiberSoluble_lt?: Float;
+  dietaryFiberSoluble_lte?: Float;
+  dietaryFiberSoluble_gt?: Float;
+  dietaryFiberSoluble_gte?: Float;
+  dietaryFiberInsoluble?: Float;
+  dietaryFiberInsoluble_not?: Float;
+  dietaryFiberInsoluble_in?: Float[] | Float;
+  dietaryFiberInsoluble_not_in?: Float[] | Float;
+  dietaryFiberInsoluble_lt?: Float;
+  dietaryFiberInsoluble_lte?: Float;
+  dietaryFiberInsoluble_gt?: Float;
+  dietaryFiberInsoluble_gte?: Float;
+  dietaryFiberTotal?: Float;
+  dietaryFiberTotal_not?: Float;
+  dietaryFiberTotal_in?: Float[] | Float;
+  dietaryFiberTotal_not_in?: Float[] | Float;
+  dietaryFiberTotal_lt?: Float;
+  dietaryFiberTotal_lte?: Float;
+  dietaryFiberTotal_gt?: Float;
+  dietaryFiberTotal_gte?: Float;
+  ash?: Float;
+  ash_not?: Float;
+  ash_in?: Float[] | Float;
+  ash_not_in?: Float[] | Float;
+  ash_lt?: Float;
+  ash_lte?: Float;
+  ash_gt?: Float;
+  ash_gte?: Float;
+  AND?: ProximateWhereInput[] | ProximateWhereInput;
+  OR?: ProximateWhereInput[] | ProximateWhereInput;
+  NOT?: ProximateWhereInput[] | ProximateWhereInput;
+}
+
+export interface ProximateUpdateManyMutationInput {
+  water?: Float;
+  protein?: Float;
+  proteinByAminoAcid?: Float;
+  lipid?: Float;
+  triacylGlycerol?: Float;
+  saturated?: Float;
+  monoUnsaturated?: Float;
+  polyUnsaturated?: Float;
+  cholesterol?: Float;
+  carbohydrateTotal?: Float;
+  carbohydrateAvailable?: Float;
+  dietaryFiberSoluble?: Float;
+  dietaryFiberInsoluble?: Float;
+  dietaryFiberTotal?: Float;
+  ash?: Float;
+}
+
+export interface VitaminUpdateManyMutationInput {
+  retinol?: Float;
+  alphaCarotene?: Float;
+  betaCarotene?: Float;
+  betaCryptoxanthin?: Float;
+  betaCaroteneEquivalents?: Float;
+  retinolActivityEquivalents?: Float;
+  vitaminD?: Float;
+  alphaTocopherol?: Float;
+  betaTocopherol?: Float;
+  gammaTocopherol?: Float;
+  deltaTocopherol?: Float;
+  vitaminK?: Float;
+  thiamin?: Float;
+  riboflavin?: Float;
+  niacin?: Float;
+  vitaminB6?: Float;
+  vitaminB12?: Float;
+  folate?: Float;
+  pantothenicAcid?: Float;
+  biotin?: Float;
+  ascorbicAcid?: Float;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -180,21 +1358,338 @@ export interface NodeNode {
   id: ID_Output;
 }
 
-export interface User {
-  id: ID_Output;
-  name: String;
+export interface VitaminPreviousValues {
+  retinol?: Float;
+  alphaCarotene?: Float;
+  betaCarotene?: Float;
+  betaCryptoxanthin?: Float;
+  betaCaroteneEquivalents?: Float;
+  retinolActivityEquivalents?: Float;
+  vitaminD?: Float;
+  alphaTocopherol?: Float;
+  betaTocopherol?: Float;
+  gammaTocopherol?: Float;
+  deltaTocopherol?: Float;
+  vitaminK?: Float;
+  thiamin?: Float;
+  riboflavin?: Float;
+  niacin?: Float;
+  vitaminB6?: Float;
+  vitaminB12?: Float;
+  folate?: Float;
+  pantothenicAcid?: Float;
+  biotin?: Float;
+  ascorbicAcid?: Float;
 }
 
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface VitaminPreviousValuesPromise
+  extends Promise<VitaminPreviousValues>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  retinol: () => Promise<Float>;
+  alphaCarotene: () => Promise<Float>;
+  betaCarotene: () => Promise<Float>;
+  betaCryptoxanthin: () => Promise<Float>;
+  betaCaroteneEquivalents: () => Promise<Float>;
+  retinolActivityEquivalents: () => Promise<Float>;
+  vitaminD: () => Promise<Float>;
+  alphaTocopherol: () => Promise<Float>;
+  betaTocopherol: () => Promise<Float>;
+  gammaTocopherol: () => Promise<Float>;
+  deltaTocopherol: () => Promise<Float>;
+  vitaminK: () => Promise<Float>;
+  thiamin: () => Promise<Float>;
+  riboflavin: () => Promise<Float>;
+  niacin: () => Promise<Float>;
+  vitaminB6: () => Promise<Float>;
+  vitaminB12: () => Promise<Float>;
+  folate: () => Promise<Float>;
+  pantothenicAcid: () => Promise<Float>;
+  biotin: () => Promise<Float>;
+  ascorbicAcid: () => Promise<Float>;
+}
+
+export interface VitaminPreviousValuesSubscription
+  extends Promise<AsyncIterator<VitaminPreviousValues>>,
+    Fragmentable {
+  retinol: () => Promise<AsyncIterator<Float>>;
+  alphaCarotene: () => Promise<AsyncIterator<Float>>;
+  betaCarotene: () => Promise<AsyncIterator<Float>>;
+  betaCryptoxanthin: () => Promise<AsyncIterator<Float>>;
+  betaCaroteneEquivalents: () => Promise<AsyncIterator<Float>>;
+  retinolActivityEquivalents: () => Promise<AsyncIterator<Float>>;
+  vitaminD: () => Promise<AsyncIterator<Float>>;
+  alphaTocopherol: () => Promise<AsyncIterator<Float>>;
+  betaTocopherol: () => Promise<AsyncIterator<Float>>;
+  gammaTocopherol: () => Promise<AsyncIterator<Float>>;
+  deltaTocopherol: () => Promise<AsyncIterator<Float>>;
+  vitaminK: () => Promise<AsyncIterator<Float>>;
+  thiamin: () => Promise<AsyncIterator<Float>>;
+  riboflavin: () => Promise<AsyncIterator<Float>>;
+  niacin: () => Promise<AsyncIterator<Float>>;
+  vitaminB6: () => Promise<AsyncIterator<Float>>;
+  vitaminB12: () => Promise<AsyncIterator<Float>>;
+  folate: () => Promise<AsyncIterator<Float>>;
+  pantothenicAcid: () => Promise<AsyncIterator<Float>>;
+  biotin: () => Promise<AsyncIterator<Float>>;
+  ascorbicAcid: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface MineralConnection {
+  pageInfo: PageInfo;
+  edges: MineralEdge[];
+}
+
+export interface MineralConnectionPromise
+  extends Promise<MineralConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MineralEdge>>() => T;
+  aggregate: <T = AggregateMineralPromise>() => T;
+}
+
+export interface MineralConnectionSubscription
+  extends Promise<AsyncIterator<MineralConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MineralEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMineralSubscription>() => T;
+}
+
+export interface Vitamin {
+  retinol?: Float;
+  alphaCarotene?: Float;
+  betaCarotene?: Float;
+  betaCryptoxanthin?: Float;
+  betaCaroteneEquivalents?: Float;
+  retinolActivityEquivalents?: Float;
+  vitaminD?: Float;
+  alphaTocopherol?: Float;
+  betaTocopherol?: Float;
+  gammaTocopherol?: Float;
+  deltaTocopherol?: Float;
+  vitaminK?: Float;
+  thiamin?: Float;
+  riboflavin?: Float;
+  niacin?: Float;
+  vitaminB6?: Float;
+  vitaminB12?: Float;
+  folate?: Float;
+  pantothenicAcid?: Float;
+  biotin?: Float;
+  ascorbicAcid?: Float;
+}
+
+export interface VitaminPromise extends Promise<Vitamin>, Fragmentable {
+  retinol: () => Promise<Float>;
+  alphaCarotene: () => Promise<Float>;
+  betaCarotene: () => Promise<Float>;
+  betaCryptoxanthin: () => Promise<Float>;
+  betaCaroteneEquivalents: () => Promise<Float>;
+  retinolActivityEquivalents: () => Promise<Float>;
+  vitaminD: () => Promise<Float>;
+  alphaTocopherol: () => Promise<Float>;
+  betaTocopherol: () => Promise<Float>;
+  gammaTocopherol: () => Promise<Float>;
+  deltaTocopherol: () => Promise<Float>;
+  vitaminK: () => Promise<Float>;
+  thiamin: () => Promise<Float>;
+  riboflavin: () => Promise<Float>;
+  niacin: () => Promise<Float>;
+  vitaminB6: () => Promise<Float>;
+  vitaminB12: () => Promise<Float>;
+  folate: () => Promise<Float>;
+  pantothenicAcid: () => Promise<Float>;
+  biotin: () => Promise<Float>;
+  ascorbicAcid: () => Promise<Float>;
+}
+
+export interface VitaminSubscription
+  extends Promise<AsyncIterator<Vitamin>>,
+    Fragmentable {
+  retinol: () => Promise<AsyncIterator<Float>>;
+  alphaCarotene: () => Promise<AsyncIterator<Float>>;
+  betaCarotene: () => Promise<AsyncIterator<Float>>;
+  betaCryptoxanthin: () => Promise<AsyncIterator<Float>>;
+  betaCaroteneEquivalents: () => Promise<AsyncIterator<Float>>;
+  retinolActivityEquivalents: () => Promise<AsyncIterator<Float>>;
+  vitaminD: () => Promise<AsyncIterator<Float>>;
+  alphaTocopherol: () => Promise<AsyncIterator<Float>>;
+  betaTocopherol: () => Promise<AsyncIterator<Float>>;
+  gammaTocopherol: () => Promise<AsyncIterator<Float>>;
+  deltaTocopherol: () => Promise<AsyncIterator<Float>>;
+  vitaminK: () => Promise<AsyncIterator<Float>>;
+  thiamin: () => Promise<AsyncIterator<Float>>;
+  riboflavin: () => Promise<AsyncIterator<Float>>;
+  niacin: () => Promise<AsyncIterator<Float>>;
+  vitaminB6: () => Promise<AsyncIterator<Float>>;
+  vitaminB12: () => Promise<AsyncIterator<Float>>;
+  folate: () => Promise<AsyncIterator<Float>>;
+  pantothenicAcid: () => Promise<AsyncIterator<Float>>;
+  biotin: () => Promise<AsyncIterator<Float>>;
+  ascorbicAcid: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface Proximate {
+  water?: Float;
+  protein?: Float;
+  proteinByAminoAcid?: Float;
+  lipid?: Float;
+  triacylGlycerol?: Float;
+  saturated?: Float;
+  monoUnsaturated?: Float;
+  polyUnsaturated?: Float;
+  cholesterol?: Float;
+  carbohydrateTotal?: Float;
+  carbohydrateAvailable?: Float;
+  dietaryFiberSoluble?: Float;
+  dietaryFiberInsoluble?: Float;
+  dietaryFiberTotal?: Float;
+  ash?: Float;
+}
+
+export interface ProximatePromise extends Promise<Proximate>, Fragmentable {
+  water: () => Promise<Float>;
+  protein: () => Promise<Float>;
+  proteinByAminoAcid: () => Promise<Float>;
+  lipid: () => Promise<Float>;
+  triacylGlycerol: () => Promise<Float>;
+  saturated: () => Promise<Float>;
+  monoUnsaturated: () => Promise<Float>;
+  polyUnsaturated: () => Promise<Float>;
+  cholesterol: () => Promise<Float>;
+  carbohydrateTotal: () => Promise<Float>;
+  carbohydrateAvailable: () => Promise<Float>;
+  dietaryFiberSoluble: () => Promise<Float>;
+  dietaryFiberInsoluble: () => Promise<Float>;
+  dietaryFiberTotal: () => Promise<Float>;
+  ash: () => Promise<Float>;
+}
+
+export interface ProximateSubscription
+  extends Promise<AsyncIterator<Proximate>>,
+    Fragmentable {
+  water: () => Promise<AsyncIterator<Float>>;
+  protein: () => Promise<AsyncIterator<Float>>;
+  proteinByAminoAcid: () => Promise<AsyncIterator<Float>>;
+  lipid: () => Promise<AsyncIterator<Float>>;
+  triacylGlycerol: () => Promise<AsyncIterator<Float>>;
+  saturated: () => Promise<AsyncIterator<Float>>;
+  monoUnsaturated: () => Promise<AsyncIterator<Float>>;
+  polyUnsaturated: () => Promise<AsyncIterator<Float>>;
+  cholesterol: () => Promise<AsyncIterator<Float>>;
+  carbohydrateTotal: () => Promise<AsyncIterator<Float>>;
+  carbohydrateAvailable: () => Promise<AsyncIterator<Float>>;
+  dietaryFiberSoluble: () => Promise<AsyncIterator<Float>>;
+  dietaryFiberInsoluble: () => Promise<AsyncIterator<Float>>;
+  dietaryFiberTotal: () => Promise<AsyncIterator<Float>>;
+  ash: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface VitaminEdge {
+  node: Vitamin;
+  cursor: String;
+}
+
+export interface VitaminEdgePromise extends Promise<VitaminEdge>, Fragmentable {
+  node: <T = VitaminPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface VitaminEdgeSubscription
+  extends Promise<AsyncIterator<VitaminEdge>>,
+    Fragmentable {
+  node: <T = VitaminSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateVitamin {
+  count: Int;
+}
+
+export interface AggregateVitaminPromise
+  extends Promise<AggregateVitamin>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVitaminSubscription
+  extends Promise<AsyncIterator<AggregateVitamin>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface FoodConnection {
+  pageInfo: PageInfo;
+  edges: FoodEdge[];
+}
+
+export interface FoodConnectionPromise
+  extends Promise<FoodConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<FoodEdge>>() => T;
+  aggregate: <T = AggregateFoodPromise>() => T;
+}
+
+export interface FoodConnectionSubscription
+  extends Promise<AsyncIterator<FoodConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<FoodEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateFoodSubscription>() => T;
+}
+
+export interface VitaminConnection {
+  pageInfo: PageInfo;
+  edges: VitaminEdge[];
+}
+
+export interface VitaminConnectionPromise
+  extends Promise<VitaminConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VitaminEdge>>() => T;
+  aggregate: <T = AggregateVitaminPromise>() => T;
+}
+
+export interface VitaminConnectionSubscription
+  extends Promise<AsyncIterator<VitaminConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VitaminEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVitaminSubscription>() => T;
+}
+
+export interface AggregateFood {
+  count: Int;
+}
+
+export interface AggregateFoodPromise
+  extends Promise<AggregateFood>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateFoodSubscription
+  extends Promise<AsyncIterator<AggregateFood>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserConnection {
@@ -218,60 +1713,144 @@ export interface UserConnectionSubscription
   aggregate: <T = AggregateUserSubscription>() => T;
 }
 
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserEdge {
-  node: User;
+export interface FoodEdge {
+  node: Food;
   cursor: String;
 }
 
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
+export interface FoodEdgePromise extends Promise<FoodEdge>, Fragmentable {
+  node: <T = FoodPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
+export interface FoodEdgeSubscription
+  extends Promise<AsyncIterator<FoodEdge>>,
     Fragmentable {
-  node: <T = UserSubscription>() => T;
+  node: <T = FoodSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregateUser {
-  count: Int;
+export interface User {
+  id: ID_Output;
+  name: String;
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Food {
+  id: ID_Output;
+  foodGroupId: ID_Output;
+  itemNumber: Int;
+  description: String;
+  energy?: Float;
+  saltEquivalents?: Float;
+  alcohol?: Float;
+  nitrateIon?: Float;
+  theobromine?: Float;
+  caffeine?: Float;
+  tannin?: Float;
+  polyphenol?: Float;
+  aceticAcid?: Float;
+  cookingOil?: Float;
+  organicAcids?: Float;
+}
+
+export interface FoodPromise extends Promise<Food>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  foodGroupId: () => Promise<ID_Output>;
+  itemNumber: () => Promise<Int>;
+  description: () => Promise<String>;
+  energy: () => Promise<Float>;
+  proximate: <T = ProximatePromise>() => T;
+  mineral: <T = MineralPromise>() => T;
+  vitamin: <T = VitaminPromise>() => T;
+  saltEquivalents: () => Promise<Float>;
+  alcohol: () => Promise<Float>;
+  nitrateIon: () => Promise<Float>;
+  theobromine: () => Promise<Float>;
+  caffeine: () => Promise<Float>;
+  tannin: () => Promise<Float>;
+  polyphenol: () => Promise<Float>;
+  aceticAcid: () => Promise<Float>;
+  cookingOil: () => Promise<Float>;
+  organicAcids: () => Promise<Float>;
+}
+
+export interface FoodSubscription
+  extends Promise<AsyncIterator<Food>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  foodGroupId: () => Promise<AsyncIterator<ID_Output>>;
+  itemNumber: () => Promise<AsyncIterator<Int>>;
+  description: () => Promise<AsyncIterator<String>>;
+  energy: () => Promise<AsyncIterator<Float>>;
+  proximate: <T = ProximateSubscription>() => T;
+  mineral: <T = MineralSubscription>() => T;
+  vitamin: <T = VitaminSubscription>() => T;
+  saltEquivalents: () => Promise<AsyncIterator<Float>>;
+  alcohol: () => Promise<AsyncIterator<Float>>;
+  nitrateIon: () => Promise<AsyncIterator<Float>>;
+  theobromine: () => Promise<AsyncIterator<Float>>;
+  caffeine: () => Promise<AsyncIterator<Float>>;
+  tannin: () => Promise<AsyncIterator<Float>>;
+  polyphenol: () => Promise<AsyncIterator<Float>>;
+  aceticAcid: () => Promise<AsyncIterator<Float>>;
+  cookingOil: () => Promise<AsyncIterator<Float>>;
+  organicAcids: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface ProximateEdge {
+  node: Proximate;
+  cursor: String;
+}
+
+export interface ProximateEdgePromise
+  extends Promise<ProximateEdge>,
+    Fragmentable {
+  node: <T = ProximatePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ProximateEdgeSubscription
+  extends Promise<AsyncIterator<ProximateEdge>>,
+    Fragmentable {
+  node: <T = ProximateSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface FoodSubscriptionPayload {
+  mutation: MutationType;
+  node: Food;
+  updatedFields: String[];
+  previousValues: FoodPreviousValues;
+}
+
+export interface FoodSubscriptionPayloadPromise
+  extends Promise<FoodSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = FoodPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = FoodPreviousValuesPromise>() => T;
+}
+
+export interface FoodSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<FoodSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = FoodSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = FoodPreviousValuesSubscription>() => T;
 }
 
 export interface BatchPayload {
@@ -288,6 +1867,83 @@ export interface BatchPayloadSubscription
   extends Promise<AsyncIterator<BatchPayload>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface FoodPreviousValues {
+  id: ID_Output;
+  foodGroupId: ID_Output;
+  itemNumber: Int;
+  description: String;
+  energy?: Float;
+  saltEquivalents?: Float;
+  alcohol?: Float;
+  nitrateIon?: Float;
+  theobromine?: Float;
+  caffeine?: Float;
+  tannin?: Float;
+  polyphenol?: Float;
+  aceticAcid?: Float;
+  cookingOil?: Float;
+  organicAcids?: Float;
+}
+
+export interface FoodPreviousValuesPromise
+  extends Promise<FoodPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  foodGroupId: () => Promise<ID_Output>;
+  itemNumber: () => Promise<Int>;
+  description: () => Promise<String>;
+  energy: () => Promise<Float>;
+  saltEquivalents: () => Promise<Float>;
+  alcohol: () => Promise<Float>;
+  nitrateIon: () => Promise<Float>;
+  theobromine: () => Promise<Float>;
+  caffeine: () => Promise<Float>;
+  tannin: () => Promise<Float>;
+  polyphenol: () => Promise<Float>;
+  aceticAcid: () => Promise<Float>;
+  cookingOil: () => Promise<Float>;
+  organicAcids: () => Promise<Float>;
+}
+
+export interface FoodPreviousValuesSubscription
+  extends Promise<AsyncIterator<FoodPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  foodGroupId: () => Promise<AsyncIterator<ID_Output>>;
+  itemNumber: () => Promise<AsyncIterator<Int>>;
+  description: () => Promise<AsyncIterator<String>>;
+  energy: () => Promise<AsyncIterator<Float>>;
+  saltEquivalents: () => Promise<AsyncIterator<Float>>;
+  alcohol: () => Promise<AsyncIterator<Float>>;
+  nitrateIon: () => Promise<AsyncIterator<Float>>;
+  theobromine: () => Promise<AsyncIterator<Float>>;
+  caffeine: () => Promise<AsyncIterator<Float>>;
+  tannin: () => Promise<AsyncIterator<Float>>;
+  polyphenol: () => Promise<AsyncIterator<Float>>;
+  aceticAcid: () => Promise<AsyncIterator<Float>>;
+  cookingOil: () => Promise<AsyncIterator<Float>>;
+  organicAcids: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -315,23 +1971,349 @@ export interface UserSubscriptionPayloadSubscription
   previousValues: <T = UserPreviousValuesSubscription>() => T;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  name: String;
+export interface MineralEdge {
+  node: Mineral;
+  cursor: String;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+export interface MineralEdgePromise extends Promise<MineralEdge>, Fragmentable {
+  node: <T = MineralPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface MineralEdgeSubscription
+  extends Promise<AsyncIterator<MineralEdge>>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
+  node: <T = MineralSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MineralSubscriptionPayload {
+  mutation: MutationType;
+  node: Mineral;
+  updatedFields: String[];
+  previousValues: MineralPreviousValues;
+}
+
+export interface MineralSubscriptionPayloadPromise
+  extends Promise<MineralSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MineralPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MineralPreviousValuesPromise>() => T;
+}
+
+export interface MineralSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MineralSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MineralSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MineralPreviousValuesSubscription>() => T;
+}
+
+export interface VitaminSubscriptionPayload {
+  mutation: MutationType;
+  node: Vitamin;
+  updatedFields: String[];
+  previousValues: VitaminPreviousValues;
+}
+
+export interface VitaminSubscriptionPayloadPromise
+  extends Promise<VitaminSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = VitaminPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = VitaminPreviousValuesPromise>() => T;
+}
+
+export interface VitaminSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<VitaminSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = VitaminSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = VitaminPreviousValuesSubscription>() => T;
+}
+
+export interface ProximateConnection {
+  pageInfo: PageInfo;
+  edges: ProximateEdge[];
+}
+
+export interface ProximateConnectionPromise
+  extends Promise<ProximateConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ProximateEdge>>() => T;
+  aggregate: <T = AggregateProximatePromise>() => T;
+}
+
+export interface ProximateConnectionSubscription
+  extends Promise<AsyncIterator<ProximateConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ProximateEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateProximateSubscription>() => T;
+}
+
+export interface ProximatePreviousValues {
+  water?: Float;
+  protein?: Float;
+  proteinByAminoAcid?: Float;
+  lipid?: Float;
+  triacylGlycerol?: Float;
+  saturated?: Float;
+  monoUnsaturated?: Float;
+  polyUnsaturated?: Float;
+  cholesterol?: Float;
+  carbohydrateTotal?: Float;
+  carbohydrateAvailable?: Float;
+  dietaryFiberSoluble?: Float;
+  dietaryFiberInsoluble?: Float;
+  dietaryFiberTotal?: Float;
+  ash?: Float;
+}
+
+export interface ProximatePreviousValuesPromise
+  extends Promise<ProximatePreviousValues>,
+    Fragmentable {
+  water: () => Promise<Float>;
+  protein: () => Promise<Float>;
+  proteinByAminoAcid: () => Promise<Float>;
+  lipid: () => Promise<Float>;
+  triacylGlycerol: () => Promise<Float>;
+  saturated: () => Promise<Float>;
+  monoUnsaturated: () => Promise<Float>;
+  polyUnsaturated: () => Promise<Float>;
+  cholesterol: () => Promise<Float>;
+  carbohydrateTotal: () => Promise<Float>;
+  carbohydrateAvailable: () => Promise<Float>;
+  dietaryFiberSoluble: () => Promise<Float>;
+  dietaryFiberInsoluble: () => Promise<Float>;
+  dietaryFiberTotal: () => Promise<Float>;
+  ash: () => Promise<Float>;
+}
+
+export interface ProximatePreviousValuesSubscription
+  extends Promise<AsyncIterator<ProximatePreviousValues>>,
+    Fragmentable {
+  water: () => Promise<AsyncIterator<Float>>;
+  protein: () => Promise<AsyncIterator<Float>>;
+  proteinByAminoAcid: () => Promise<AsyncIterator<Float>>;
+  lipid: () => Promise<AsyncIterator<Float>>;
+  triacylGlycerol: () => Promise<AsyncIterator<Float>>;
+  saturated: () => Promise<AsyncIterator<Float>>;
+  monoUnsaturated: () => Promise<AsyncIterator<Float>>;
+  polyUnsaturated: () => Promise<AsyncIterator<Float>>;
+  cholesterol: () => Promise<AsyncIterator<Float>>;
+  carbohydrateTotal: () => Promise<AsyncIterator<Float>>;
+  carbohydrateAvailable: () => Promise<AsyncIterator<Float>>;
+  dietaryFiberSoluble: () => Promise<AsyncIterator<Float>>;
+  dietaryFiberInsoluble: () => Promise<AsyncIterator<Float>>;
+  dietaryFiberTotal: () => Promise<AsyncIterator<Float>>;
+  ash: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface ProximateSubscriptionPayload {
+  mutation: MutationType;
+  node: Proximate;
+  updatedFields: String[];
+  previousValues: ProximatePreviousValues;
+}
+
+export interface ProximateSubscriptionPayloadPromise
+  extends Promise<ProximateSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ProximatePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ProximatePreviousValuesPromise>() => T;
+}
+
+export interface ProximateSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ProximateSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ProximateSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ProximatePreviousValuesSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MineralPreviousValues {
+  sodium?: Float;
+  potassium?: Float;
+  calcium?: Float;
+  magnesium?: Float;
+  phosphorus?: Float;
+  iron?: Float;
+  zinc?: Float;
+  copper?: Float;
+  manganese?: Float;
+  iodine?: Float;
+  selenium?: Float;
+  chromium?: Float;
+  molybdenum?: Float;
+}
+
+export interface MineralPreviousValuesPromise
+  extends Promise<MineralPreviousValues>,
+    Fragmentable {
+  sodium: () => Promise<Float>;
+  potassium: () => Promise<Float>;
+  calcium: () => Promise<Float>;
+  magnesium: () => Promise<Float>;
+  phosphorus: () => Promise<Float>;
+  iron: () => Promise<Float>;
+  zinc: () => Promise<Float>;
+  copper: () => Promise<Float>;
+  manganese: () => Promise<Float>;
+  iodine: () => Promise<Float>;
+  selenium: () => Promise<Float>;
+  chromium: () => Promise<Float>;
+  molybdenum: () => Promise<Float>;
+}
+
+export interface MineralPreviousValuesSubscription
+  extends Promise<AsyncIterator<MineralPreviousValues>>,
+    Fragmentable {
+  sodium: () => Promise<AsyncIterator<Float>>;
+  potassium: () => Promise<AsyncIterator<Float>>;
+  calcium: () => Promise<AsyncIterator<Float>>;
+  magnesium: () => Promise<AsyncIterator<Float>>;
+  phosphorus: () => Promise<AsyncIterator<Float>>;
+  iron: () => Promise<AsyncIterator<Float>>;
+  zinc: () => Promise<AsyncIterator<Float>>;
+  copper: () => Promise<AsyncIterator<Float>>;
+  manganese: () => Promise<AsyncIterator<Float>>;
+  iodine: () => Promise<AsyncIterator<Float>>;
+  selenium: () => Promise<AsyncIterator<Float>>;
+  chromium: () => Promise<AsyncIterator<Float>>;
+  molybdenum: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface Mineral {
+  sodium?: Float;
+  potassium?: Float;
+  calcium?: Float;
+  magnesium?: Float;
+  phosphorus?: Float;
+  iron?: Float;
+  zinc?: Float;
+  copper?: Float;
+  manganese?: Float;
+  iodine?: Float;
+  selenium?: Float;
+  chromium?: Float;
+  molybdenum?: Float;
+}
+
+export interface MineralPromise extends Promise<Mineral>, Fragmentable {
+  sodium: () => Promise<Float>;
+  potassium: () => Promise<Float>;
+  calcium: () => Promise<Float>;
+  magnesium: () => Promise<Float>;
+  phosphorus: () => Promise<Float>;
+  iron: () => Promise<Float>;
+  zinc: () => Promise<Float>;
+  copper: () => Promise<Float>;
+  manganese: () => Promise<Float>;
+  iodine: () => Promise<Float>;
+  selenium: () => Promise<Float>;
+  chromium: () => Promise<Float>;
+  molybdenum: () => Promise<Float>;
+}
+
+export interface MineralSubscription
+  extends Promise<AsyncIterator<Mineral>>,
+    Fragmentable {
+  sodium: () => Promise<AsyncIterator<Float>>;
+  potassium: () => Promise<AsyncIterator<Float>>;
+  calcium: () => Promise<AsyncIterator<Float>>;
+  magnesium: () => Promise<AsyncIterator<Float>>;
+  phosphorus: () => Promise<AsyncIterator<Float>>;
+  iron: () => Promise<AsyncIterator<Float>>;
+  zinc: () => Promise<AsyncIterator<Float>>;
+  copper: () => Promise<AsyncIterator<Float>>;
+  manganese: () => Promise<AsyncIterator<Float>>;
+  iodine: () => Promise<AsyncIterator<Float>>;
+  selenium: () => Promise<AsyncIterator<Float>>;
+  chromium: () => Promise<AsyncIterator<Float>>;
+  molybdenum: () => Promise<AsyncIterator<Float>>;
+}
+
+export interface AggregateProximate {
+  count: Int;
+}
+
+export interface AggregateProximatePromise
+  extends Promise<AggregateProximate>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateProximateSubscription
+  extends Promise<AsyncIterator<AggregateProximate>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateMineral {
+  count: Int;
+}
+
+export interface AggregateMineralPromise
+  extends Promise<AggregateMineral>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateMineralSubscription
+  extends Promise<AsyncIterator<AggregateMineral>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 /*
@@ -341,21 +2323,26 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
-
-/*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
 */
 export type Int = number;
 
 /*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+export type Long = string;
+
+/*
+The `Float` scalar type represents signed double-precision fractional values as specified by [IEEE 754](https://en.wikipedia.org/wiki/IEEE_floating_point). 
+*/
+export type Float = number;
+
+/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean;
-
-export type Long = string;
 
 /**
  * Model Metadata
@@ -364,6 +2351,22 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "User",
+    embedded: false
+  },
+  {
+    name: "Food",
+    embedded: false
+  },
+  {
+    name: "Proximate",
+    embedded: false
+  },
+  {
+    name: "Mineral",
+    embedded: false
+  },
+  {
+    name: "Vitamin",
     embedded: false
   }
 ];
